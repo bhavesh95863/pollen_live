@@ -144,7 +144,7 @@ class PartyBalanceTransfer(Document):
             return
         filters = {
             "customer": party,
-            "status": ["in", ["Draft", "Unpaid", "Partially Paid", "Overdue", "Paid"]],
+            "docstatus": 1,
             "debit_to": self.from_account,
         }
         invoices = frappe.get_all("Sales Invoice", filters=filters, fields=["name"])
