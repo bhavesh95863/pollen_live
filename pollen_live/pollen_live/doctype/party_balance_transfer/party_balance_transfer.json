@@ -1,0 +1,142 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "BAL-TRANSFER-.####",
+ "creation": "2025-05-21 18:09:48.368117",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "company",
+  "party_type",
+  "column_break_bqxz",
+  "single_party",
+  "party",
+  "amended_from",
+  "section_break_lwet",
+  "from_account",
+  "column_break_slcm",
+  "transfer_to_default_account",
+  "account",
+  "section_break_ukhk",
+  "transfer_details",
+  "section_break_pthp",
+  "transaction_details"
+ ],
+ "fields": [
+  {
+   "fieldname": "party_type",
+   "fieldtype": "Link",
+   "label": "Party Type",
+   "options": "DocType"
+  },
+  {
+   "default": "0",
+   "fieldname": "single_party",
+   "fieldtype": "Check",
+   "label": "Single Party"
+  },
+  {
+   "fieldname": "column_break_bqxz",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "1",
+   "description": "This will be transfer into the account which is define in default accounts",
+   "fieldname": "transfer_to_default_account",
+   "fieldtype": "Check",
+   "label": "Transfer To Default Account"
+  },
+  {
+   "depends_on": "eval:!doc.transfer_to_default_account",
+   "fieldname": "account",
+   "fieldtype": "Link",
+   "label": "To Account",
+   "options": "Account"
+  },
+  {
+   "depends_on": "single_party",
+   "fieldname": "party",
+   "fieldtype": "Dynamic Link",
+   "label": "Party",
+   "options": "party_type"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Party Balance Transfer",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "section_break_lwet",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "from_account",
+   "fieldtype": "Link",
+   "label": "From Account",
+   "options": "Account"
+  },
+  {
+   "fieldname": "column_break_slcm",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_ukhk",
+   "fieldtype": "Section Break",
+   "hidden": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "transfer_details",
+   "fieldtype": "Code",
+   "label": "Transfer Details",
+   "no_copy": 1
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Company",
+   "options": "Company"
+  },
+  {
+   "fieldname": "section_break_pthp",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "transaction_details",
+   "fieldtype": "HTML",
+   "label": "Transaction Details",
+   "no_copy": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2025-05-21 20:28:22.396757",
+ "modified_by": "Administrator",
+ "module": "Pollen Live",
+ "name": "Party Balance Transfer",
+ "naming_rule": "Expression (old style)",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
