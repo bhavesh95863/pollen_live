@@ -46,8 +46,8 @@ class PartyBalanceTransfer(Document):
         transfer_details = []
         balance = get_balance_on(self.from_account, today(), self.party_type, party)
 
-        if balance <= 0:
-            return []
+        # if balance <= 0:
+        #     return []
 
         party_account = frappe.db.get_value(
             "Party Account",
@@ -144,7 +144,7 @@ class PartyBalanceTransfer(Document):
             return
         filters = {
             "customer": party,
-            "status": ["in", ["Draft", "Unpaid", "Partially Paid", "Overdue"]],
+            "status": ["in", ["Draft", "Unpaid", "Partially Paid", "Overdue", "Paid"]],
             "debit_to": self.from_account,
         }
         invoices = frappe.get_all("Sales Invoice", filters=filters, fields=["name"])
@@ -167,6 +167,33 @@ class PartyBalanceTransfer(Document):
 				AND party_type=%s AND party=%s
 			""",
                 (new_account, invoice.name, self.party_type, party),
+            )
+
+        filters = {
+            "party_type": self.party_type,
+            "party": party,
+            "paid_from": self.from_account,
+        }
+        payments = frappe.get_all("Payment Entry", filters=filters, fields=["name"])
+        for payment in payments:
+            frappe.db.set_value("Payment Entry", payment.name, "paid_from", new_account)
+            frappe.db.sql(
+                """
+				UPDATE `tabGL Entry` 
+				SET account=%s 
+				WHERE voucher_type='Payment Entry' AND voucher_no=%s 
+				AND party_type=%s AND party=%s
+			""",
+                (new_account, payment.name, self.party_type, party),
+            )
+            frappe.db.sql(
+                """
+				UPDATE `tabPayment Ledger Entry` 
+				SET account=%s 
+				WHERE voucher_type='Payment Entry' AND voucher_no=%s 
+				AND party_type=%s AND party=%s
+			""",
+                (new_account, payment.name, self.party_type, party),
             )
 
 
